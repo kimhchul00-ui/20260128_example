@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - Shop Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header th:replace="~{fragments/layout :: admin-header}"></header>
+
+    <main class="container-fluid my-4">
+        <h2 class="mb-4">대시보드</h2>
+
+        <!-- 통계 카드 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">전체 회원</h5>
+                        <p class="card-text fs-2" th:text="${totalMembers}">0</p>
+                        <a th:href="@{/admin/members}" class="text-white">관리하기 →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">전체 상품</h5>
+                        <p class="card-text fs-2" th:text="${totalProducts}">0</p>
+                        <a th:href="@{/admin/products}" class="text-white">관리하기 →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">전체 주문</h5>
+                        <p class="card-text fs-2" th:text="${totalOrders}">0</p>
+                        <a th:href="@{/admin/orders}" class="text-white">관리하기 →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">배송 대기</h5>
+                        <p class="card-text fs-2" th:text="${pendingDeliveries}">0</p>
+                        <a th:href="@{/admin/deliveries}" class="text-dark">관리하기 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주문 상태별 현황 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">주문 상태별 현황</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col">
+                                <p class="mb-1 text-muted">주문대기</p>
+                                <p class="fs-4 fw-bold" th:text="${pendingOrders}">0</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-1 text-muted">결제완료</p>
+                                <p class="fs-4 fw-bold text-primary" th:text="${paidOrders}">0</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-1 text-muted">배송중</p>
+                                <p class="fs-4 fw-bold text-info" th:text="${shippingOrders}">0</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-1 text-muted">배송완료</p>
+                                <p class="fs-4 fw-bold text-success" th:text="${deliveredOrders}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 빠른 메뉴 -->
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <a th:href="@{/admin/products/new}" class="btn btn-outline-primary btn-lg w-100 py-4">
+                    + 상품 등록
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a th:href="@{/admin/orders}" class="btn btn-outline-info btn-lg w-100 py-4">
+                    주문 관리
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a th:href="@{/admin/deliveries}" class="btn btn-outline-warning btn-lg w-100 py-4">
+                    배송 관리
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a th:href="@{/}" class="btn btn-outline-secondary btn-lg w-100 py-4">
+                    쇼핑몰로 이동
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

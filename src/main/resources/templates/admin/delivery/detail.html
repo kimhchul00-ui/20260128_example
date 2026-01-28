@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배송 상세 - Shop Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header th:replace="~{fragments/layout :: admin-header}"></header>
+
+    <main class="container-fluid my-4">
+        <div th:replace="~{fragments/layout :: alerts}"></div>
+
+        <h2 class="mb-4">배송 상세</h2>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">배송 정보</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th style="width: 30%">배송 ID</th>
+                                <td th:text="${delivery.id}">1</td>
+                            </tr>
+                            <tr>
+                                <th>주문번호</th>
+                                <td>
+                                    <a th:href="@{/admin/orders/{id}(id=${delivery.orderId})}" th:text="${delivery.orderNumber}">ABCD1234</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>수령인</th>
+                                <td th:text="${delivery.receiverName}">홍길동</td>
+                            </tr>
+                            <tr>
+                                <th>연락처</th>
+                                <td th:text="${delivery.receiverPhone}">010-1234-5678</td>
+                            </tr>
+                            <tr>
+                                <th>배송지</th>
+                                <td th:text="${delivery.address}">서울시 강남구</td>
+                            </tr>
+                            <tr>
+                                <th>배송상태</th>
+                                <td>
+                                    <span class="badge fs-6 bg-info" th:text="${delivery.statusDescription}">배송상태</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${delivery.trackingNumber != null}">
+                                <th>운송장번호</th>
+                                <td th:text="${delivery.trackingNumber}">1234567890</td>
+                            </tr>
+                            <tr th:if="${delivery.shippedAt != null}">
+                                <th>발송일시</th>
+                                <td th:text="${delivery.shippedAt}">2024-01-01</td>
+                            </tr>
+                            <tr th:if="${delivery.deliveredAt != null}">
+                                <th>배송완료일시</th>
+                                <td th:text="${delivery.deliveredAt}">2024-01-01</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <!-- 상태 변경 -->
+                <div class="card mb-4" th:if="${delivery.status != 'DELIVERED'}">
+                    <div class="card-header">
+                        <h5 class="mb-0">배송 상태 변경</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/deliveries/{id}/status(id=${delivery.id})}" th:object="${updateRequest}" method="post">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">상태</label>
+                                <select class="form-select" id="status" th:field="*{status}">
+                                    <option th:each="s : ${statuses}" th:value="${s.name()}" th:text="${s.description}"
+                                            th:selected="${s.name() == delivery.status}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="trackingNumber" class="form-label">운송장번호</label>
+                                <input type="text" class="form-control" id="trackingNumber" th:field="*{trackingNumber}"
+                                       th:value="${delivery.trackingNumber}">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">변경</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <a th:href="@{/admin/deliveries}" class="btn btn-outline-secondary w-100">목록으로</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
