@@ -137,6 +137,12 @@ public class OrderService {
         return orderRepository.findByMemberOrderByOrderedAtDesc(member, pageable);
     }
 
+    /** 주문내역용: 트랜잭션 내에서 DTO로 매핑하여 LazyInitializationException 방지 */
+    public Page<OrderDto.Response> findHistoryByMember(Member member, Pageable pageable) {
+        Page<Order> orders = orderRepository.findByMemberOrderByOrderedAtDesc(member, pageable);
+        return orders.map(OrderDto.Response::from);
+    }
+
     public Page<Order> findAll(Pageable pageable) {
         return orderRepository.findAll(pageable);
     }

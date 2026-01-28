@@ -19,10 +19,6 @@
                     <div class="card-body">
                         <div th:replace="~{fragments/layout :: alerts}"></div>
 
-                        <div th:if="${error}" class="alert alert-danger">
-                            <span th:text="${error}"></span>
-                        </div>
-
                         <form th:action="@{/member/login}" method="post">
                             <div class="mb-3">
                                 <label for="username" class="form-label">이메일</label>

@@ -29,7 +29,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT o FROM Order o WHERE " +
            "(:status IS NULL OR o.status = :status) AND " +
-           "(:keyword IS NULL OR o.orderNumber LIKE %:keyword%)")
+           "(:keyword IS NULL OR o.orderNumber LIKE CONCAT('%', :keyword, '%'))")
     Page<Order> searchOrders(
             @Param("status") Order.OrderStatus status,
             @Param("keyword") String keyword,

@@ -18,7 +18,7 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
     @Query("SELECT d FROM Delivery d JOIN FETCH d.order o WHERE " +
            "(:status IS NULL OR d.status = :status) AND " +
-           "(:keyword IS NULL OR o.orderNumber LIKE %:keyword% OR d.receiverName LIKE %:keyword%)")
+           "(:keyword IS NULL OR o.orderNumber LIKE CONCAT('%', :keyword, '%') OR d.receiverName LIKE CONCAT('%', :keyword, '%'))")
     Page<Delivery> searchDeliveries(
             @Param("status") Delivery.DeliveryStatus status,
             @Param("keyword") String keyword,

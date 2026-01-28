@@ -130,8 +130,13 @@ public class OrderController {
     }
 
     @GetMapping("/complete/{orderId}")
-    public String complete(@PathVariable Long orderId, Model model) {
+    public String complete(@AuthenticationPrincipal CustomUserDetails userDetails,
+                          @PathVariable Long orderId,
+                          Model model) {
         Order order = orderService.findById(orderId);
+        if (!order.getMember().getId().equals(userDetails.getMember().getId())) {
+            return "redirect:/order/history";
+        }
         model.addAttribute("order", OrderDto.Response.from(order));
         return "order/complete";
     }
@@ -142,8 +147,7 @@ public class OrderController {
                          @RequestParam(defaultValue = "10") int size,
                          Model model) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "orderedAt"));
-        Page<Order> orders = orderService.findByMember(userDetails.getMember(), pageable);
-        model.addAttribute("orders", orders.map(OrderDto.Response::from));
+        model.addAttribute("orders", orderService.findHistoryByMember(userDetails.getMember(), pageable));
         return "order/history";
     }
 

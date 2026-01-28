@@ -18,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByIsActiveTrue(Pageable pageable);
 
     @Query("SELECT p FROM Product p WHERE p.isActive = true AND " +
-           "(:keyword IS NULL OR p.name LIKE %:keyword% OR p.description LIKE %:keyword%) AND " +
+           "(:keyword IS NULL OR p.name LIKE CONCAT('%', :keyword, '%') OR p.description LIKE CONCAT('%', :keyword, '%')) AND " +
            "(:category IS NULL OR p.category = :category) AND " +
            "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
            "(:maxPrice IS NULL OR p.price <= :maxPrice)")
