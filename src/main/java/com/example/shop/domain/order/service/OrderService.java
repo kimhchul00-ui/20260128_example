@@ -151,6 +151,12 @@ public class OrderService {
         return orderRepository.searchOrders(status, keyword, pageable);
     }
 
+    /** 관리자 목록용: delivery fetch 후 AdminListResponse로 변환 (LazyInitializationException 방지) */
+    public Page<OrderDto.AdminListResponse> searchForAdmin(Order.OrderStatus status, String keyword, Pageable pageable) {
+        Page<Order> orders = orderRepository.searchOrdersWithDelivery(status, keyword, pageable);
+        return orders.map(OrderDto.AdminListResponse::from);
+    }
+
     @Transactional
     public Order updateStatus(Long orderId, Order.OrderStatus status) {
         Order order = findById(orderId);

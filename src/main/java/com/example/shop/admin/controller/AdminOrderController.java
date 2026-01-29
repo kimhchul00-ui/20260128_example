@@ -34,9 +34,9 @@ public class AdminOrderController {
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "orderedAt"));
-        Page<Order> orders = orderService.search(orderStatus, keyword.isEmpty() ? null : keyword, pageable);
+        Page<OrderDto.AdminListResponse> orders = orderService.searchForAdmin(orderStatus, keyword.isEmpty() ? null : keyword, pageable);
 
-        model.addAttribute("orders", orders.map(OrderDto.Response::from));
+        model.addAttribute("orders", orders);
         model.addAttribute("statuses", Order.OrderStatus.values());
         model.addAttribute("keyword", keyword);
         model.addAttribute("status", status);

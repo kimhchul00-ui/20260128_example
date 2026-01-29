@@ -161,6 +161,38 @@ public class OrderDto {
         }
     }
 
+    /** 관리자 목록용: orderItems 미접근으로 LazyInitializationException 방지 */
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class AdminListResponse {
+        private Long id;
+        private String orderNumber;
+        private Integer totalAmount;
+        private String status;
+        private String statusDescription;
+        private String orderedAt;
+        private String deliveryStatusDescription;
+
+        public static AdminListResponse from(Order order) {
+            String deliveryStatusDesc = null;
+            if (order.getDelivery() != null) {
+                deliveryStatusDesc = order.getDelivery().getStatus().getDescription();
+            }
+            return AdminListResponse.builder()
+                    .id(order.getId())
+                    .orderNumber(order.getOrderNumber())
+                    .totalAmount(order.getTotalAmount())
+                    .status(order.getStatus().name())
+                    .statusDescription(order.getStatus().getDescription())
+                    .orderedAt(order.getOrderedAt() != null ? order.getOrderedAt().toString() : null)
+                    .deliveryStatusDescription(deliveryStatusDesc)
+                    .build();
+        }
+    }
+
     @Getter
     @Setter
     @NoArgsConstructor

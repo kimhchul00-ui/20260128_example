@@ -35,6 +35,18 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             @Param("keyword") String keyword,
             Pageable pageable);
 
+    /** 관리자 목록용: delivery만 fetch (orderItems 미접근으로 LazyInitializationException 방지) */
+    @Query(value = "SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.delivery WHERE " +
+           "(:status IS NULL OR o.status = :status) AND " +
+           "(:keyword IS NULL OR o.orderNumber LIKE CONCAT('%', :keyword, '%'))",
+           countQuery = "SELECT COUNT(o) FROM Order o WHERE " +
+           "(:status IS NULL OR o.status = :status) AND " +
+           "(:keyword IS NULL OR o.orderNumber LIKE CONCAT('%', :keyword, '%'))")
+    Page<Order> searchOrdersWithDelivery(
+            @Param("status") Order.OrderStatus status,
+            @Param("keyword") String keyword,
+            Pageable pageable);
+
     Page<Order> findByStatus(Order.OrderStatus status, Pageable pageable);
 
     long countByStatus(Order.OrderStatus status);

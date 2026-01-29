@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문서 - Shop Mall</title>
+    <title>주문서 - SSSGG.COM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/layout :: styles}"></th:block>
 </head>
 <body>
     <header th:replace="~{fragments/layout :: header}"></header>
 
-    <main class="container my-5">
-        <div th:replace="~{fragments/layout :: alerts}"></div>
+    <main class="ssg-main">
+        <div class="ssg-container">
+            <div th:replace="~{fragments/layout :: alerts}"></div>
 
-        <h2 class="mb-4">주문서</h2>
+            <h2 class="ssg-section-title mb-4">주문서</h2>
 
         <form th:action="@{/order/checkout}" th:object="${request}" method="post">
             <div class="row">
@@ -110,13 +114,14 @@
                                 </tr>
                             </table>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">결제하기</button>
+                                <button type="submit" class="btn btn-ssg-primary btn-lg">결제하기</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
+        </div>
     </main>
 
     <footer th:replace="~{fragments/layout :: footer}"></footer>

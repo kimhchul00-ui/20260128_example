@@ -2,11 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<!-- Header Fragment -->
-<header th:fragment="header" class="navbar navbar-expand-lg navbar-dark bg-primary">
+<!-- 공통 스타일 (SSG 테마) - 각 페이지 head 안에 추가 -->
+<link th:fragment="styles" rel="stylesheet" th:href="@{/css/ssg-style.css}">
+
+<!-- Header Fragment (SSG 스타일: 흰 배경, 빨간 포인트) -->
+<header th:fragment="header" class="navbar navbar-expand-lg navbar-light ssg-header">
     <div class="container">
-        <a class="navbar-brand" th:href="@{/}">Shop Mall</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <a class="navbar-brand" th:href="@{/}">SSSGG.COM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="메뉴">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -20,10 +23,18 @@
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/order/history}">주문내역</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                <!-- 관리자 메뉴: 관리자 계정 로그인 시에만 노출 (기본 비노출) -->
+                <th:block sec:authorize="isAuthenticated() and hasRole('ADMIN')">
+                <li class="nav-item">
                     <a class="nav-link text-warning" th:href="@{/admin}">관리자</a>
                 </li>
+                </th:block>
             </ul>
+            <!-- 검색 영역 (SSG 통합검색 느낌) -->
+            <form th:action="@{/products}" method="get" class="d-flex me-3" role="search">
+                <input class="form-control form-control-search me-2" type="search" name="keyword" placeholder="SSG 통합검색" aria-label="검색">
+                <button class="btn btn-ssg-search" type="submit">검색</button>
+            </form>
             <ul class="navbar-nav">
                 <li class="nav-item" sec:authorize="isAnonymous()">
                     <a class="nav-link" th:href="@{/member/login}">로그인</a>
@@ -38,7 +49,7 @@
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="nav-link btn btn-link">로그아웃</button>
+                        <button type="submit" class="nav-link btn btn-link p-0 ms-2" style="color: inherit;">로그아웃</button>
                     </form>
                 </li>
             </ul>
@@ -46,17 +57,33 @@
     </div>
 </header>
 
-<!-- Footer Fragment -->
-<footer th:fragment="footer" class="bg-dark text-white py-4 mt-5">
-    <div class="container text-center">
-        <p class="mb-0">&copy; 2026 Shop Mall. All rights reserved.</p>
+<!-- Footer Fragment (SSG 스타일: 진한 회색, 정책 링크) -->
+<footer th:fragment="footer" class="ssg-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <span class="footer-brand">SSSGG.COM</span>
+                <p class="mb-0 mt-1 small">믿고 사는 즐거움</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <ul class="footer-links">
+                    <li><a href="#">회사소개</a></li>
+                    <li><a href="#">이용약관</a></li>
+                    <li><a href="#">개인정보처리방침</a></li>
+                    <li><a href="#">고객센터</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p class="mb-0">&copy; 2026 SSSGG.COM. All rights reserved.</p>
+        </div>
     </div>
 </footer>
 
-<!-- Admin Header Fragment -->
-<header th:fragment="admin-header" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- Admin Header Fragment (SSG 톤: 진한 회색) -->
+<header th:fragment="admin-header" class="navbar navbar-expand-lg navbar-dark" style="background: var(--ssg-footer-bg, #2c2c2c);">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/admin}">Shop Admin</a>
+        <a class="navbar-brand" th:href="@{/admin}">SSSGG.COM 관리자</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
             <span class="navbar-toggler-icon"></span>
         </button>

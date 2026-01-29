@@ -4,20 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 목록 - Shop Mall</title>
+    <title>상품 목록 - SSSGG.COM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/layout :: styles}"></th:block>
 </head>
 <body>
     <header th:replace="~{fragments/layout :: header}"></header>
 
-    <main class="container my-5">
-        <div th:replace="~{fragments/layout :: alerts}"></div>
+    <main class="ssg-main">
+        <div class="ssg-container">
+            <div th:replace="~{fragments/layout :: alerts}"></div>
 
-        <h2 class="mb-4">상품 목록</h2>
+            <h2 class="ssg-section-title mb-4">상품 목록</h2>
 
-        <!-- Search Form -->
-        <div class="card mb-4">
-            <div class="card-body">
+            <!-- Search Form (SSG 검색 영역) -->
+            <div class="ssg-search-box">
                 <form th:action="@{/products}" method="get" class="row g-3">
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="상품명 검색">
@@ -36,50 +38,50 @@
                         <input type="number" class="form-control" name="maxPrice" th:value="${maxPrice}" placeholder="최대 가격">
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">검색</button>
+                        <button type="submit" class="btn btn-ssg-primary w-100">검색</button>
                     </div>
                 </form>
             </div>
-        </div>
 
-        <!-- Product Grid -->
-        <div class="row">
-            <div class="col-md-3 mb-4" th:each="product : ${products.content}">
-                <div class="card h-100">
-                    <img th:src="${product.imageUrl != null ? product.imageUrl : 'https://via.placeholder.com/300x200'}"
-                         class="card-img-top" alt="상품 이미지" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${product.name}">상품명</h5>
-                        <p class="card-text">
-                            <span class="badge bg-secondary" th:text="${product.category}">카테고리</span>
-                        </p>
-                        <p class="card-text fw-bold text-primary">
-                            <span th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}">10,000</span>원
-                        </p>
-                        <p class="card-text small text-muted">
-                            재고: <span th:text="${product.stockQuantity}">100</span>개
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-grid gap-1">
-                            <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-primary">상세보기</a>
-                            <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post" sec:authorize="isAuthenticated()">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="btn btn-sm btn-outline-success w-100">장바구니 담기</button>
-                            </form>
+            <!-- Product Grid (SSG 카드 스타일) -->
+            <div class="row">
+                <div class="col-md-3 mb-4" th:each="product : ${products.content}">
+                    <div class="card ssg-card h-100">
+                        <img th:src="${(product.imageUrl != null and !#strings.isEmpty(product.imageUrl)) ? product.imageUrl : 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOWVjZWYiLz48cGF0aCBkPSJNMTUwIDg1IEwxODAgMTE1IEwxNjUgMTE1IEwxNjUgMTQ1IEwxMzUgMTQ1IEwxMzUgMTE1IEwxMjAgMTE1IFoiIGZpbGw9IiNhZGI1YmQiLz48dGV4dCB4PSIxNTAiIHk9IjE3NSIgZmlsbD0iIzZjNzU3ZCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='}"
+                             class="card-img-top" alt="상품 이미지"
+                             onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMzAwIDIwMCI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOWVjZWYiLz48cGF0aCBkPSJNMTUwIDg1IEwxODAgMTE1IEwxNjUgMTE1IEwxNjUgMTQ1IEwxMzUgMTQ1IEwxMzUgMTE1IEwxMjAgMTE1IFoiIGZpbGw9IiNhZGI1YmQiLz48dGV4dCB4PSIxNTAiIHk9IjE3NSIgZmlsbD0iIzZjNzU3ZCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.name}">상품명</h5>
+                            <p class="card-text">
+                                <span class="badge bg-secondary" th:text="${product.category}">카테고리</span>
+                            </p>
+                            <p class="card-text card-price">
+                                <span th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')}">10,000</span>원
+                            </p>
+                            <p class="card-text small text-muted">
+                                재고: <span th:text="${product.stockQuantity}">100</span>개
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-grid gap-1">
+                                <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-ssg-primary">상세보기</a>
+                                <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post" sec:authorize="isAuthenticated()">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-sm btn-ssg-outline w-100">장바구니 담기</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div th:if="${products.content.isEmpty()}" class="text-center py-5">
-            <p class="text-muted">검색 결과가 없습니다.</p>
-        </div>
+            <div th:if="${products.content.isEmpty()}" class="text-center py-5">
+                <p class="text-muted">검색 결과가 없습니다.</p>
+            </div>
 
-        <!-- Pagination -->
-        <nav th:if="${products.totalPages > 1}">
-            <ul class="pagination justify-content-center">
+            <!-- Pagination -->
+            <nav th:if="${products.totalPages > 1}">
+                <ul class="pagination justify-content-center">
                 <li class="page-item" th:classappend="${products.first} ? 'disabled'">
                     <a class="page-link" th:href="@{/products(keyword=${keyword}, category=${category}, minPrice=${minPrice}, maxPrice=${maxPrice}, page=${products.number - 1})}">이전</a>
                 </li>
@@ -91,8 +93,9 @@
                 <li class="page-item" th:classappend="${products.last} ? 'disabled'">
                     <a class="page-link" th:href="@{/products(keyword=${keyword}, category=${category}, minPrice=${minPrice}, maxPrice=${maxPrice}, page=${products.number + 1})}">다음</a>
                 </li>
-            </ul>
-        </nav>
+                </ul>
+            </nav>
+        </div>
     </main>
 
     <footer th:replace="~{fragments/layout :: footer}"></footer>
